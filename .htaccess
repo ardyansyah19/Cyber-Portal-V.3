@@ -1,0 +1,48 @@
+# =====================================================
+# Hardening tambahan di level Apache
+# =====================================================
+
+# Sembunyikan file sensitif dari akses langsung browser
+<FilesMatch "\.(sql|log|env|md)$">
+    Require all denied
+</FilesMatch>
+
+<Files "config.php">
+    # config.php tetap perlu di-include oleh PHP lain, tapi akses HTTP langsung ditolak
+    Require all denied
+</Files>
+
+<Files "seed.php">
+    Require all denied
+</Files>
+
+<Files "doc_functions.php">
+    Require all denied
+</Files>
+
+<Files "functions_2fa.php">
+    Require all denied
+</Files>
+
+<Files "database_documents.sql">
+    Require all denied
+</Files>
+
+<Files "database_v2_upgrade.sql">
+    Require all denied
+</Files>
+
+# Matikan directory listing
+Options -Indexes
+
+# Paksa HTTPS (aktifkan jika sudah pasang SSL)
+# RewriteEngine On
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Header keamanan tambahan (redundan dengan header di config.php, sebagai defense-in-depth)
+<IfModule mod_headers.c>
+    Header set X-Frame-Options "DENY"
+    Header set X-Content-Type-Options "nosniff"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
