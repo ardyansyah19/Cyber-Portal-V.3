@@ -1,4 +1,5 @@
 # Sistem Login (PHP + MySQL)  V2
+By Ahmad Riko Dyansyah
 
 Sistem login + berbagi dokumen terenkripsi dengan lapisan keamanan berlapis (defense-in-depth).
 Ditujukan untuk pembelajaran/pengembangan lokal — sesuaikan lagi sebelum dipakai produksi.
