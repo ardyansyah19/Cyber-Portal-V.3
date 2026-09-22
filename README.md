@@ -84,32 +84,3 @@ mysql -u root -p secure_login_db < database_v2_upgrade.sql
 export TOTP_MASTER_KEY="$(php -r 'echo base64_encode(random_bytes(32));')"
 ```
 Dokumen yang diupload sebelum migrasi tetap bisa dibuka seperti biasa (kode sudah menangani kompatibilitas mundur untuk kolom `original_filename`).
-
-## Struktur File
-
-```
-secure-login/
-├── database.sql              # skema inti: users, login_attempts, activity_log
-├── database_documents.sql    # skema dokumen: documents, document_access_log
-├── database_v2_upgrade.sql   # migrasi v2: 2FA, reset password, rate limit registrasi, enkripsi nama file
-├── seed.php                  # generate password hash valid untuk dummy user
-├── config.php                 # koneksi DB + session hardening + CSP nonce + master keys
-├── functions.php              # CSRF, rate limiting, hashing, primitif AES-256-GCM, secure delete
-├── functions_2fa.php          # TOTP (RFC 6238): generate/verify kode, enkripsi secret
-├── doc_functions.php          # enkripsi/dekripsi dokumen + nama file (envelope encryption)
-├── login.php                  # form + proses login (honeypot, auto rehash, cabang 2FA)
-├── verify_2fa.php             # verifikasi kode 2FA setelah password benar
-├── setup_2fa.php              # aktivasi/nonaktifasi 2FA
-├── register.php               # form + proses registrasi (+ rate limit per-IP)
-├── forgot_password.php        # minta link reset password
-├── reset_password.php         # set password baru dari token reset
-├── login_history.php          # riwayat aktivitas akun untuk user
-├── dashboard.php               # halaman terproteksi (butuh login)
-├── upload_document.php         # upload & enkripsi dokumen baru + set password
-├── my_documents.php            # daftar dokumen milik owner (unduh/hapus, CSP-safe)
-├── download_owner.php          # unduh sebagai owner tanpa password (via master key)
-├── share.php                   # halaman publik: masukkan password untuk buka dokumen
-├── logout.php                  # hancurkan session dengan aman
-├── storage/                    # (dibuat otomatis) file terenkripsi, diblokir via .htaccess
-└── .htaccess                   # blokir akses langsung ke file sensitif
-```
