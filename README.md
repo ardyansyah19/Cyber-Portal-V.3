@@ -4,9 +4,9 @@ By Ahmad Riko Dyansyah
 Sistem login + berbagi dokumen terenkripsi dengan lapisan keamanan berlapis (defense-in-depth).
 Ditujukan untuk pembelajaran/pengembangan lokal — sesuaikan lagi sebelum dipakai produksi.
 
-⚠️ **Koreksi penting**: draf awal 2FA sempat memakai API QR pihak ketiga (`api.qrserver.com`) — ini dibatalkan karena akan mengirim *secret* 2FA ke server luar. Versi final memakai **manual setup key** yang di-generate dan ditampilkan sepenuhnya di server sendiri, tidak pernah dikirim ke pihak ketiga mana pun.
+**Koreksi penting**: draf awal 2FA sempat memakai API QR pihak ketiga (`api.qrserver.com`) — ini dibatalkan karena akan mengirim *secret* 2FA ke server luar. Versi final memakai **manual setup key** yang di-generate dan ditampilkan sepenuhnya di server sendiri, tidak pernah dikirim ke pihak ketiga mana pun.
 
-## 🆕 Fitur Berbagi Dokumen Terenkripsi
+## Fitur Berbagi Dokumen Terenkripsi
 
 Setiap dokumen (PDF/DOC/DOCX) dienkripsi dengan **AES-256-GCM** dan dilindungi password unik yang ditentukan pengirim. Tanpa password itu, dokumen tidak bisa dibuka oleh siapa pun.
 
@@ -14,8 +14,8 @@ Setiap dokumen (PDF/DOC/DOCX) dienkripsi dengan **AES-256-GCM** dan dilindungi p
 
 1. File asli dienkripsi dengan **DEK** (Data Encryption Key) acak sekali pakai per dokumen.
 2. DEK itu sendiri dibungkus **dua kali secara independen**:
-   - 🔑 **Amplop password**: dibuka dengan kunci turunan PBKDF2 dari password yang ditentukan pengirim → dipakai oleh siapa pun yang tahu password (link `share.php?token=...`).
-   - 🔑 **Amplop owner**: dibuka dengan *master key* rahasia di server (`DOC_MASTER_KEY`, disimpan di ENV) → dipakai otomatis saat pengirim (owner) login dan mengunduh dari `my_documents.php`, tanpa perlu masukkan password lagi.
+   - **Amplop password**: dibuka dengan kunci turunan PBKDF2 dari password yang ditentukan pengirim → dipakai oleh siapa pun yang tahu password (link `share.php?token=...`).
+   - **Amplop owner**: dibuka dengan *master key* rahasia di server (`DOC_MASTER_KEY`, disimpan di ENV) → dipakai otomatis saat pengirim (owner) login dan mengunduh dari `my_documents.php`, tanpa perlu masukkan password lagi.
 3. File plaintext, DEK asli, dan password **tidak pernah** disimpan di database maupun disk.
 4. Auth tag GCM otomatis menjadi mekanisme verifikasi password — password salah akan gagal decrypt, tanpa perlu simpan hash password terpisah.
 
