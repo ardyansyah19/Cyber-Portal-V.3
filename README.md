@@ -60,27 +60,3 @@ Alur pemakaian:
    # Master key TERPISAH untuk enkripsi secret 2FA (jangan disamakan dengan DOC_MASTER_KEY):
    export TOTP_MASTER_KEY="$(php -r 'echo base64_encode(random_bytes(32));')"
    ```
-
-3. **Isi data dummy dengan hash yang valid**:
-   ```bash
-   php seed.php
-   ```
-   Ini akan menampilkan 3 akun dummy beserta passwordnya:
-   - `admin_demo` / `P@ssw0rdKuat!123`
-   - `budi_santoso` / `Budi#Aman2026`
-   - `siti_rahayu` / `Siti$Secure99`
-
-4. **Jalankan server PHP** (untuk testing lokal):
-   ```bash
-   php -S localhost:8000
-   ```
-   Buka `http://localhost:8000/login.php`
-
-### Kalau sudah pernah pakai v1
-
-Cukup jalankan migrasinya saja, data lama tidak hilang:
-```bash
-mysql -u root -p secure_login_db < database_v2_upgrade.sql
-export TOTP_MASTER_KEY="$(php -r 'echo base64_encode(random_bytes(32));')"
-```
-Dokumen yang diupload sebelum migrasi tetap bisa dibuka seperti biasa (kode sudah menangani kompatibilitas mundur untuk kolom `original_filename`).
