@@ -17,6 +17,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $password = (string) ($_POST['password'] ?? '');
         $confirm  = (string) ($_POST['confirm_password'] ?? '');
 
+         record_registration_attempt($pdo);
+        $username = clean_input($_POST['username'] ?? '');
+        $email    = filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
+        $password = (string) ($_POST['password'] ?? '');
+        $confirm  = (string) ($_POST['confirm_password'] ?? '');
+
+         record_registration_attempt($pdo);
+        $username = clean_input($_POST['username'] ?? '');
+        $email    = filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
+        $password = (string) ($_POST['password'] ?? '');
+        $confirm  = (string) ($_POST['confirm_password'] ?? '');
+
         if (!is_valid_username($username)) {
             $errors[] = 'Username hanya boleh huruf, angka, underscore (3-30 karakter).';
         }
